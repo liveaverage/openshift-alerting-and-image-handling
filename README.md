@@ -1,4 +1,4 @@
-# OpenShift Image Handling & Monitoring/Alerting
+# OpenShift Monitoring/Alerting & Image Handling
 
 Quick examples on using image streams, tags, image pull policies, Prometheus/AlertManager Rules, and cluster-/tenant-level monitoring & metrics.
 
