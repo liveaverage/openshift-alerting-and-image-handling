@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pod-alert
+  namespace: cafe
+spec:
+  groups:
+  - name: pod-alive-rules
+    rules:
+    - alert: pod-alive
+      expr: openshift_deploymentconfig_spec_replicas{deploymentconfig=~"(dje-custom|jenkins)"} == 0
+      for: 1m
+      #expr: openshift_deploymentconfig_spec_replicas{deploymentconfig=~"(dje-custom|jenkins)"} == 0 or kube_deployment_spec_replicas{deployment=~"(dje-custom|jenkins)"} == 0
+      annotations:
+        summary: Pods are down
+        description: if {{ $labels.namespace }}/{{ $labels.deploymentconfig }} failed to complete.
+      labels:
+        severity: critical
