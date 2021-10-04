@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cafe-storage-usage
+  namespace: cafe
+spec:
+  groups:
+  - name: pvc-monitor
+    rules:
+    - alert: pvc-volume-full
+      annotations:
+        description: '{{ printf "%.2f" $value }}% full for PVC {{ $labels.persistentvolumeclaim }}.'
+        summary: PVC volume is full
+      expr: kubelet_volume_stats_used_bytes/kubelet_volume_stats_capacity_bytes*100 > 0.25
+      for: 1m
+      labels:
+        severity: warning

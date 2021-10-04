@@ -1,0 +1,21 @@
+# Sample Receiver (note this needs to be configured by cluster admin and should be filtering by labels/per namespace). For multiple alerts see https://www.robustperception.io/sending-alert-notifications-to-multiple-destinations :
+
+receivers:
+  - name: ns_cafe_alerts
+    slack_configs:
+      - channel: '#taking-over-the-world'
+        send_resolved: true
+        link_names: true
+...
+route:
+  group_by:
+    - namespace
+  group_interval: 5m
+  group_wait: 30s
+  receiver: Default
+  repeat_interval: 12h
+  routes:
+    - receiver: ns_cafe_alerts
+      match:
+        #severity: critical
+        namespace: cafe
